@@ -2,14 +2,6 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta
-        http-equiv="Content-Security-Policy"
-        content="
-        default-src 'self' https:;
-        img-src 'self' https: data:;
-        script-src 'self' 'unsafe-inline' https://telegram.org https://unpkg.com;
-        style-src 'self' 'unsafe-inline' https://unpkg.com;
-    ">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Drivee Expedition Map</title>
     
@@ -34,28 +26,8 @@
             top: 0;
             left: 0;
         }
-        .info-panel {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-        
-            background: #FFFFFF;
-        
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-        
-            box-shadow:
-                0 -4px 20px rgba(0,0,0,.08);
-        
-            padding: 16px 18px;
-        
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        
-            box-sizing: border-box;
-            z-index: 1000;
+       .info-panel {
+            height: 110px;
         }
         
         .info-text {
@@ -192,12 +164,22 @@
         tg.ready();
         tg.expand();
 
+        let totalSteps = 0;
+        
+        try {
+            const apiData = await getSteps();
+            totalSteps = Number(apiData.totalSteps || 0);
+        } catch (e) {
+            console.error("Ошибка загрузки шагов", e);
+        }
+        
         const progressPercent = Math.min(
             (totalSteps / 11000000) * 100,
             100
         );
         
         const filledBlocks = Math.round(progressPercent / 10);
+        
         const progressBar =
             "🟦".repeat(filledBlocks) +
             "⬜️".repeat(10 - filledBlocks);
