@@ -140,6 +140,16 @@
         tg.ready();
         tg.expand();
 
+        const progressPercent = Math.min(
+            (totalSteps / 11000000) * 100,
+            100
+        );
+        
+        const filledBlocks = Math.round(progressPercent / 10);
+        const progressBar =
+            "🟦".repeat(filledBlocks) +
+            "⬜️".repeat(10 - filledBlocks);
+    
         // ПОЛНЫЙ СПИСОК ГОРОДОВ С ТЕКСТАМИ ОПИСАНИЙ ИЗ ТВОЕГО БОТА
         const CITIES = [
             { steps: 0, name: "Москва 🏰", lat: 55.7558, lon: 37.6173, image: "images/moscow.jpg", desc: "Старт! Самый большой город Европы и начало нашего приключения." },
@@ -222,15 +232,27 @@
         CITIES.forEach(city => {
             // Формируем красивое текстовое окно с описанием как в боте
             const popupText = `
-                <div class="leaflet-popup-content-header">${city.name}</div>
+                <div class="leaflet-popup-content-header">
+                    ${city.name}
+                </div>
             
                 <img
-                  class="leaflet-popup-image"
-                  src="${city.image}"
-                  alt="${city.name}"
-                  loading="lazy"
-                  onerror="this.style.display='none'"
+                    class="leaflet-popup-image"
+                    src="${city.image}"
+                    alt="${city.name}"
+                    loading="lazy"
+                    onerror="this.style.display='none'"
                 >
+            
+                <div style="
+                    margin:8px 0 10px 0;
+                    font-size:13px;
+                    line-height:1.5;
+                ">
+                    📈 ${progressBar} ${progressPercent.toFixed(1)}%<br>
+                    👣 ${totalSteps.toLocaleString('ru-RU')} /
+                    ${11000000 .toLocaleString('ru-RU')}
+                </div>
             
                 <div class="leaflet-popup-content-desc">
                     ${city.desc}
