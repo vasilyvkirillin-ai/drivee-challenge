@@ -48,7 +48,7 @@
             box-sizing: border-box;
             z-index: 1000;
         
-            height: 110px;
+            min-height: 110px;
         }
                 
         .info-text {
@@ -310,7 +310,7 @@
                 ">
                     📈 ${progressBar} ${progressPercent.toFixed(1)}%<br>
                     👣 ${totalSteps.toLocaleString('ru-RU')} /
-                    ${11000000 .toLocaleString('ru-RU')}
+                    ${(11000000).toLocaleString('ru-RU')}
                 </div>
             
                 <div class="leaflet-popup-content-desc">
@@ -322,7 +322,7 @@
                 // Пульсирующий синий маркер для текущего города
                 const pulseIcon = L.divIcon({
                     className: 'current-marker',
-                    iconSize: [16, 16]
+                    iconSize: [20, 20]
                 });
                 L.marker([city.lat, city.lon], { icon: pulseIcon })
                     .addTo(map)
@@ -332,7 +332,7 @@
                 // Пройденные города — зеленые маркеры
                 L.circleMarker([city.lat, city.lon], {
                     radius: 7,
-                    fillColor: '#2ecc71',
+                    fillColor: '#96EA28',
                     color: '#fff',
                     weight: 2,
                     fillOpacity: 1
