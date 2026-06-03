@@ -2,6 +2,14 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta
+        http-equiv="Content-Security-Policy"
+        content="
+        default-src 'self' https:;
+        img-src 'self' https: data:;
+        script-src 'self' 'unsafe-inline' https://telegram.org https://unpkg.com;
+        style-src 'self' 'unsafe-inline' https://unpkg.com;
+    ">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Drivee Expedition Map</title>
     
@@ -163,9 +171,15 @@
         }
 
         // Автоматическая загрузка шагов
-        const apiData = await getSteps();
-        const totalSteps = apiData.totalSteps; 
-
+        let totalSteps = 0;
+        
+        try {
+            const apiData = await getSteps();
+            totalSteps = Number(apiData.totalSteps || 0);
+        } catch (e) {
+            console.error("Ошибка загрузки шагов", e);
+        }
+    
         // Находим текущий город
         let currentCity = CITIES[0];
         for (let i = 0; i < CITIES.length; i++) {
@@ -211,10 +225,11 @@
                 <div class="leaflet-popup-content-header">${city.name}</div>
             
                 <img
-                    class="leaflet-popup-image"
-                    src="${city.image}"
-                    alt="${city.name}"
-                    loading="lazy"
+                  class="leaflet-popup-image"
+                  src="${city.image}"
+                  alt="${city.name}"
+                  loading="lazy"
+                  onerror="this.style.display='none'"
                 >
             
                 <div class="leaflet-popup-content-desc">
@@ -222,7 +237,7 @@
                 </div>
             `;
 
-            if (city.name === currentCity.name) {
+            if (city === currentCity) {
                 // Пульсирующий синий маркер для текущего города
                 const pulseIcon = L.divIcon({
                     className: 'current-marker',
