@@ -245,17 +245,7 @@
         const progressBar =
             "🟦".repeat(filledBlocks) +
             "⬜️".repeat(10 - filledBlocks);
-            
-        // Автоматическая загрузка шагов
-        let totalSteps = 0;
-        
-        try {
-            const apiData = await getSteps();
-            totalSteps = Number(apiData.totalSteps || 0);
-        } catch (e) {
-            console.error("Ошибка загрузки шагов", e);
-        }
-    
+       
         // Находим текущий город
         let currentCity = CITIES[0];
         for (let i = 0; i < CITIES.length; i++) {
