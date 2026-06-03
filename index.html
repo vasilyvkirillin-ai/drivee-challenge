@@ -57,6 +57,16 @@
             font-weight: bold;
             cursor: pointer;
         }
+        .center-btn {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
         /* Стили для красивых всплывающих окон (Popups) */
         .leaflet-popup-content {
             margin: 10px;
@@ -65,11 +75,9 @@
         
         .leaflet-popup-image {
             width: 100%;
-            height: 140px;
-            object-fit: cover;
-            border-radius: 10px;
-            margin: 8px 0;
-            display: block;
+            height: auto;
+            max-height: 220px;
+            object-fit: contain;
         }
         
         .leaflet-popup-content-header {
@@ -107,7 +115,15 @@
             <p class="info-title">Текущая локация экспедиции:</p>
             <p id="current-city-name" class="info-current">Загрузка...</p>
         </div>
-        <button class="close-btn" onclick="Telegram.WebApp.close();">Закрыть</button>
+        <div style="display:flex; gap:8px;">
+            <button class="center-btn" onclick="focusCurrentCity()">
+                🎯 Моя точка
+            </button>
+        
+            <button class="close-btn" onclick="Telegram.WebApp.close();">
+                Закрыть
+            </button>
+        </div>
     </div>
 
     <script>
@@ -157,7 +173,26 @@
                 currentCity = CITIES[i];
             }
         }
-
+        window.focusCurrentCity = function () {
+        
+            map.flyTo(
+                [currentCity.lat, currentCity.lon],
+                6,
+                { duration: 1.5 }
+            );
+        
+            map.eachLayer(layer => {
+                if (layer.getPopup && layer.getPopup()) {
+                    const popup = layer.getPopup();
+        
+                    if (
+                        popup.getContent().includes(currentCity.name)
+                    ) {
+                        layer.openPopup();
+                    }
+                }
+            });
+        };
         // Обновляем плашку внизу экрана
         document.getElementById('current-city-name').innerText = currentCity.name;
 
