@@ -227,7 +227,9 @@
     
         try {
             const apiData = await getSteps();
+            console.log("API DATA:", apiData);
             totalSteps = Number(apiData.totalSteps || 0);
+            console.log("TOTAL STEPS:", totalSteps);
         } catch (e) {
             console.error("Ошибка загрузки шагов", e);
         }
