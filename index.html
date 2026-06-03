@@ -235,6 +235,23 @@
             "🟦".repeat(filledBlocks) +
             "⬜️".repeat(10 - filledBlocks);
        
+        // Сразу показываем карту России
+       const map = L.map('map').setView([61, 105], 4);
+        
+        // Загружаем карту
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+        
+        // Перелет к текущему городу
+        setTimeout(() => {
+            map.flyTo(
+                [currentCity.lat, currentCity.lon],
+                5,
+                { duration: 1.5 }
+            );
+        }, 500);
+        
         // Находим текущий город
         let currentCity = CITIES[0];
         for (let i = 0; i < CITIES.length; i++) {
@@ -265,14 +282,6 @@
         // Обновляем плашку внизу экрана
         document.getElementById('current-city-name').innerText = currentCity.name;
 
-        // Создаем карту и центрируем на текущей точке
-        const map = L.map('map').setView([currentCity.lat, currentCity.lon], 5);
-
-        // Загружаем карту
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap'
-        }).addTo(map);
-
         // Отрисовываем города и привязываем к ним описания
         CITIES.forEach(city => {
             // Формируем красивое текстовое окно с описанием как в боте
@@ -299,6 +308,16 @@
                 </div>
             `;
 
+            const cityPopup = `
+                <div class="leaflet-popup-content-header">
+                    ${city.name}
+                </div>
+            
+                <div class="leaflet-popup-content-desc">
+                    ${city.desc}
+                </div>
+            `;
+            
             if (city === currentCity) {
             
                 const pulseIcon = L.divIcon({
@@ -323,7 +342,7 @@
                     color: '#fff',
                     weight: 2,
                     fillOpacity: 1
-                }).addTo(map).bindPopup(popupText);
+                }).addTo(map).bindPopup(cityPopup);
             } else {
                 // Закрытые города — серые точки
                 L.circleMarker([city.lat, city.lon], {
