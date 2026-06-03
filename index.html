@@ -136,6 +136,9 @@
         
         /* Стили для пульсирующей точки текущего города */
         .current-marker {
+            width: 20px;
+            height: 20px;
+            background-color: #96EA28;
             border-radius: 50%;
             border: 3px solid white;
             box-shadow: 0 0 0 0 rgba(150,234,40,.6);
@@ -235,8 +238,17 @@
             "🟦".repeat(filledBlocks) +
             "⬜️".repeat(10 - filledBlocks);
        
+        // Находим текущий город
+        let currentCity = CITIES[0];
+        
+        for (let i = 0; i < CITIES.length; i++) {
+            if (totalSteps >= CITIES[i].steps) {
+                currentCity = CITIES[i];
+            }
+        }
+        
         // Сразу показываем карту России
-       const map = L.map('map').setView([61, 105], 4);
+        const map = L.map('map').setView([61, 105], 4);
         
         // Загружаем карту
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -250,15 +262,7 @@
                 5,
                 { duration: 1.5 }
             );
-        }, 500);
-        
-        // Находим текущий город
-        let currentCity = CITIES[0];
-        for (let i = 0; i < CITIES.length; i++) {
-            if (totalSteps >= CITIES[i].steps) {
-                currentCity = CITIES[i];
-            }
-        }
+    
         window.focusCurrentCity = function () {
         
             map.flyTo(
