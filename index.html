@@ -262,7 +262,8 @@
                 5,
                 { duration: 1.5 }
             );
-    
+        }, 1000);
+        
         window.focusCurrentCity = function () {
         
             map.flyTo(
@@ -357,12 +358,15 @@
                     fillOpacity: 0.7
                 }).addTo(map).bindPopup(`
                     <div class="leaflet-popup-content-header">🔒 ${city.name}</div>
-                    <div class="leaflet-popup-content-desc">Город пока закрыт. Требуется шагов всей команды: <b>${city.steps.toLocaleString('ru-RU')}</b></div>
+                    <div class="leaflet-popup-content-desc">
+                        Город пока закрыт. Требуется шагов всей команды:
+                        <b>${city.steps.toLocaleString('ru-RU')}</b>
+                    </div>
                 `);
             }
-        });
-    
-})();
+        }); // закрываем forEach
+
+})(); // закрываем async функцию
 </script>
 </body>
 </html>
