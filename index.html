@@ -300,16 +300,21 @@
             `;
 
             if (city === currentCity) {
-                // Пульсирующий синий маркер для текущего города
+            
                 const pulseIcon = L.divIcon({
-                    className: 'current-marker',
+                    className: '',
+                    html: '<div class="current-marker"></div>',
                     iconSize: [20, 20],
                     iconAnchor: [10, 10]
                 });
-                L.marker([city.lat, city.lon], { icon: pulseIcon })
-                    .addTo(map)
-                    .bindPopup(popupText)
-                    .openPopup(); // Открываем текст текущего города сразу
+            
+                const currentMarker = L.marker(
+                    [city.lat, city.lon],
+                    { icon: pulseIcon }
+                ).addTo(map);
+            
+                currentMarker.bindPopup(popupText);
+                currentMarker.openPopup();
             } else if (totalSteps >= city.steps) {
                 // Пройденные города — зеленые маркеры
                 L.circleMarker([city.lat, city.lon], {
