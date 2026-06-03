@@ -303,7 +303,8 @@
                 // Пульсирующий синий маркер для текущего города
                 const pulseIcon = L.divIcon({
                     className: 'current-marker',
-                    iconSize: [20, 20]
+                    iconSize: [20, 20],
+                    iconAnchor: [10, 10]
                 });
                 L.marker([city.lat, city.lon], { icon: pulseIcon })
                     .addTo(map)
