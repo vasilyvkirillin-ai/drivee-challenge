@@ -160,10 +160,48 @@
                 box-shadow: 0 0 0 0 rgba(150,234,40,0);
             }
         }
+		/* Стили для экрана ожидания */
+		#coming-soon-overlay {
+		    position: fixed;
+		    top: 0;
+		    left: 0;
+		    width: 100%;
+		    height: 100%;
+		    background: #f4f6f9;
+		    z-index: 9999; /* Поверх всех элементов, включая карту */
+		    display: flex;
+		    flex-direction: column;
+		    justify-content: center;
+		    align-items: center;
+		    text-align: center;
+		    padding: 20px;
+		    box-sizing: border-box;
+		}
+		
+		.coming-soon-title {
+		    font-size: 22px;
+		    font-weight: 800;
+		    color: #1E1E1E;
+		    margin-bottom: 12px;
+		}
+		
+		.coming-soon-text {
+		    font-size: 15px;
+		    color: #373C46;
+		    line-height: 1.5;
+		    margin-bottom: 24px;
+		}
     </style>
 </head>
 <body>
-
+    <div id="coming-soon-overlay">
+	    <div style="font-size: 60px; margin-bottom: 20px;">🏔️</div>
+	    <div class="coming-soon-title">Маршрут пока засекречен</div>
+	    <div class="coming-soon-text">Карта второго этапа появится здесь сразу после официального анонса. Готовьте кроссовки! 👟</div>
+	    <button class="center-btn" onclick="if(window.Telegram && window.Telegram.WebApp){ Telegram.WebApp.close(); }">
+	        Хорошо, жду!
+	    </button>
+	</div>
     <div id="map"></div>
 
     <div class="info-panel">
